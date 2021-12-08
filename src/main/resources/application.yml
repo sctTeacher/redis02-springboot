@@ -2,7 +2,7 @@ spring:
     redis:
       host: 47.94.226.83
       port: 6379
-      password: 
+      password: tU82jIJHFUDisz9e
       jedis:
         pool:
           max-active: 8

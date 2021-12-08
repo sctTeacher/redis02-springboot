@@ -2,9 +2,10 @@ package com.shan.redis02springboot;
 
 import com.shan.redis02springboot.pojo.User;
 import com.shan.redis02springboot.utils.RedisUtil;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -13,9 +14,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class Redis02SpringbootApplicationTests {
+public class RedisTests {
 
+	//注入自己的redisTemplate
 	@Autowired
+	@Qualifier("redisTemplate")
 	private RedisTemplate redisTemplate;
 
 	@Autowired
@@ -25,16 +28,12 @@ public class Redis02SpringbootApplicationTests {
 	public	void test() {
 		//获取连接信息
 		RedisConnection connection = redisTemplate.getConnectionFactory().getConnection();
-		connection.flushDb();
 		redisUtil.set("name","张三");
 		System.out.println(redisUtil.get("name"));
-		connection.close();
 	}
 	@Test
-	public	void contextLoads() {
+	public	void test2() {
 		//获取连接信息
-		RedisConnection connection = redisTemplate.getConnectionFactory().getConnection();
-		connection.flushDb();
 		redisTemplate.opsForValue().set("name","张三");
 		System.out.println(redisTemplate.opsForValue().get("name"));
 		User user = User.builder().id("1").name("哈哈").build();
@@ -43,7 +42,6 @@ public class Redis02SpringbootApplicationTests {
 		//redis 存对象必须序列化  或者转String
 		redisTemplate.opsForValue().set("user",user);
 		System.out.println(redisTemplate.opsForValue().get("user"));
-		connection.close();
 	}
 
 }
